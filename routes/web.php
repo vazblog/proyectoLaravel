@@ -195,11 +195,5 @@ Route::group(['middleware' => ['auth', 'checkUserRole:admin,cliente,empleado']],
 });
 
 
-Route::group(['middleware' => ['auth', 'checkUserRole:admin,cliente,empleado']], function () {
-    Route::resource('user', UserController::class)->only([
-        'show'
-    ]);
-});
-
 
 
