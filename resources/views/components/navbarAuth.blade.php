@@ -19,8 +19,8 @@
                             $clienteId = $cliente ? $cliente->id : null;
                         @endphp
                         @if ($clienteId)
-                            <a class="nav-link active" aria-current="page"
-                                href="{{ route('cita.show', ['citum' => $clienteId]) }}">Mis Citas</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('citas.show', $clienteId) }}">Mis Citas</a>
+
                         @else
                             <a class="nav-link active" aria-current="page" href="{{ route('citas.index') }}">Citas</a>
                         @endif
