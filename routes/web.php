@@ -187,12 +187,13 @@ Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit'
 Route::get('/cita/{id}', [CitaController::class, 'show'])->name('cita.show');
 
 
-
+/*
 Route::group(['middleware' => ['auth', 'checkUserRole:admin,cliente,empleado']], function () {
     Route::resource('cita', CitaController::class)->only([
         'show'
     ]);
 });
+*/
 
 
 
