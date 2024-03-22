@@ -17,6 +17,14 @@
     <title>BeautyZen</title>
     <!-- Theme CSS -->
     <link type="text/css" href="{{ asset('assets/css/material-kit.min.css') }}" rel="stylesheet">
+    
+    <script src="{{ env('POP_PER_JS_URL') }}"></script>
+    <script src="{{ env('BOOTSTRAP_JS_URL') }}"></script>
+    <link type="text/css" href="{{ env('MATERIAL_KIT_CSS_URL') }}" rel="stylesheet">
+    <link href="{{ env('NUCLEO_ICONS_CSS_URL') }}" rel="stylesheet">
+    {{-- Icono --}}
+    <link rel="shortcut icon" href="{{ env('ICON_URL') }}" type="image/x-icon">
+
 </head>
 
 <body class="d-flex flex-column bg-white" style="height: 100%;">

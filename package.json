@@ -3,7 +3,8 @@
     "type": "commonjs",
     "scripts": {
         "dev": "npm run watch",
-        "watch": "mix watch"
+        "watch": "mix watch",
+        "clear-compiled": "php artisan clear-compiled"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
