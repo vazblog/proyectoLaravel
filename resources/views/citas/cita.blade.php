@@ -30,7 +30,7 @@
                     <div class="p-3 text-center">
                         <i class="fab fa-whatsapp fa-3x mb-3 color-iconos"></i>
                         <h6 class="mb-0">Envíanos un Whatsapp</h6>
-                        <p class="text-dark font-weight-normal">+34 649 305 268</p>
+                        <p class="text-dark font-weight-normal">+34 600 000 000</p>
                     </div>
                 </div>
             </div>
