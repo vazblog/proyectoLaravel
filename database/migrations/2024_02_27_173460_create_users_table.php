@@ -10,20 +10,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('DNI', 9)->unique();
+            $table->string('DNI', 9)->unique()->nullable(); // Añade nullable()
             $table->string('name');
-            $table->string('apellido_uno');
-            $table->string('apellido_dos');
+            $table->string('apellido_uno')->nullable();
+            $table->string('apellido_dos')->nullable();
             $table->string('photo')->nullable();
-            $table->date('fecha_nac');
-            $table->unsignedBigInteger('telefono');
-            $table->string('direccion');
-            $table->integer('cp');
-            $table->string('poblacion');
+            $table->date('fecha_nac')->nullable(); // Añade nullable()
+            $table->unsignedBigInteger('telefono')->nullable();
+            $table->string('direccion')->nullable();
+            $table->integer('cp')->nullable();
+            $table->string('poblacion')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('perfil_id');
+            $table->unsignedBigInteger('perfil_id')->nullable(); // Añade nullable()
             $table->rememberToken();
             $table->timestamps();
 
