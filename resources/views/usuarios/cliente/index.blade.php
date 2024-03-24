@@ -52,7 +52,7 @@
                     <div class="col-lg-4 col-md-5 col-sm-6 col-8">
                         <form action="{{ route('usuarios.cliente.buscar') }}" method="GET">
                             <div class="input-group input-group-dynamic ">
-                                <input class="form-control" name="search" placeholder="Encuentra tu factura"
+                                <input class="form-control" name="search" placeholder="Introduzca el dni"
                                     type="text">
                                 <button class="btn btn-primary" type="submit" style="margin-bottom: 0rem;">Buscar</button>
                             </div>
