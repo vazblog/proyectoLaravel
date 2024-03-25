@@ -68,7 +68,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         try {
-            // dd($request->file('photo'), $request->all());
+
             // Validar los datos del formulario
             $validator = Validator::make($request->all(), [
                 'nombre' => 'required|string|max:255',
@@ -145,10 +145,6 @@ class ClienteController extends Controller
             return redirect()->back()->withInput()->with('error', 'Error al crear el cliente: ' . $e->getMessage());
         }
     }
-
-
-
-
 
 
     /**
@@ -271,7 +267,9 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
+
         try {
+
             // Buscar el cliente por su ID
             $cliente = Cliente::findOrFail($id);
 
@@ -280,7 +278,6 @@ class ClienteController extends Controller
 
             // Obtener el objeto de usuario a partir de su ID
             $usuario = User::findOrFail($usuarioId);
-
 
             // Eliminar el cliente y el usuario
             $cliente->delete();

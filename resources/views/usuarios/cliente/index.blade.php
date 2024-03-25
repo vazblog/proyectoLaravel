@@ -52,8 +52,7 @@
                     <div class="col-lg-4 col-md-5 col-sm-6 col-8">
                         <form action="{{ route('usuarios.cliente.buscar') }}" method="GET">
                             <div class="input-group input-group-dynamic ">
-                                <input class="form-control" name="search" placeholder="Introduzca el dni"
-                                    type="text">
+                                <input class="form-control" name="search" placeholder="Introduzca el dni" type="text">
                                 <button class="btn btn-primary" type="submit" style="margin-bottom: 0rem;">Buscar</button>
                             </div>
 
@@ -90,132 +89,140 @@
                 @else
                     <div class="row justify-content-center">
                         <div class="col-lg-10">
-                           
-                                <div class="card">
-                                    <div class="table-responsive">
 
-                                        <table class="table align-items-center mb-0">
-                                            <thead>
-                                                <tr class="bg-gray-200">
-                                                    <th colspan="5">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h4 class="mb-0">Lista de clientes</h4>
-                                                            <a href="{{ route('usuarios.cliente.create') }}"><i
-                                                                    class="fa-solid fa-plus-circle fa-2xl" title="Crear cliente"
-                                                                    aria-label="Crear cliente"></i></a>
-                                                        </div>
-                                                    </th>
-                                                </tr>
+                            <div class="card">
+                                <div class="table-responsive">
+
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                            <tr class="bg-gray-200">
+                                                <th colspan="5">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h4 class="mb-0">Lista de clientes</h4>
+                                                        <a href="{{ route('usuarios.cliente.create') }}"><i
+                                                                class="fa-solid fa-plus-circle fa-2xl" title="Crear cliente"
+                                                                aria-label="Crear cliente"></i></a>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Nombre</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Apellidos</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    DNI</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Dirección</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($clientes as $cliente)
                                                 <tr>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Nombre</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Apellidos</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        DNI</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Dirección</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Acciones</th>
+                                                    <td>
+                                                        <div class="d-flex px-2 py-1">
+
+                                                            <div>
+                                                                <img src="{{ !empty($cliente->user->photo) ? url('upload/admin_images/' . $cliente->user->photo) : url('upload/no_images.jpg') }}"
+                                                                    class="avatar avatar-sm me-3">
+                                                            </div>
+                                                            <div class="d-flex flex-column justify-content-center">
+                                                                <h6 class="mb-0 text-xs">{{ $cliente->user->name }}</h6>
+                                                            </div>
+
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $cliente->user->apellido_uno }}
+                                                            {{ $cliente->user->apellido_dos }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">{{ $cliente->user->DNI }}
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $cliente->user->direccion }}</p>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="d-flex justify-content-around">
+
+                                                            <!-- Enlace para ver detalles del cliente -->
+                                                            <a href="{{ route('usuarios.cliente.show', $cliente->id) }}"
+                                                                class="mb-0" title="Detalles" aria-label="Detalles">
+                                                                <i class="fa-regular fa-address-card"></i>
+                                                            </a>
+                                                            <!-- Enlace para editar -->
+                                                            <a href="{{ route('usuarios.cliente.edit', $cliente->id) }}"
+                                                                class="mb-0" title="Editar" aria-label="Editar">
+                                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                            </a>
+
+
+                                                            <a href="{{ route('usuarios.cliente.destroy', $cliente->id) }}"
+                                                                onclick="event.preventDefault(); document.getElementById('delete-form-{{ $cliente->id }}').submit();"
+                                                                title="Eliminar" aria-label="Eliminar">
+                                                                 <i class="fa-regular fa-trash-can"></i>
+                                                             </a>
+                                                             
+                                                             <form id="delete-form-{{ $cliente->id }}"
+                                                                   action="{{ route('usuarios.cliente.destroy', $cliente->id) }}"
+                                                                   method="POST"
+                                                                   style="display: none;">
+                                                                 @csrf
+                                                                 @method('DELETE')
+                                                             </form>
+
+
+                                                        </div>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($clientes as $cliente)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex px-2 py-1">
+                                            @endforeach
+                                        </tbody>
+                                    </table>
 
-                                                                <div>
-                                                                    <img src="{{ !empty($cliente->user->photo) ? url('upload/admin_images/' . $cliente->user->photo) : url('upload/no_images.jpg') }}"
-                                                                        class="avatar avatar-sm me-3">
-                                                                </div>
-                                                                <div class="d-flex flex-column justify-content-center">
-                                                                    <h6 class="mb-0 text-xs">{{ $cliente->user->name }}</h6>
-                                                                </div>
+                                    <div class="my-4">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination justify-content-center">
+                                                <!-- Enlace "Anterior" -->
+                                                <li
+                                                    class="page-item me-1 {{ $clientes->onFirstPage() ? 'disabled' : '' }}">
+                                                    <a class="page-link" href="{{ $clientes->previousPageUrl() }}"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
 
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $cliente->user->apellido_uno }}
-                                                                {{ $cliente->user->apellido_dos }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">{{ $cliente->user->DNI }}
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $cliente->user->direccion }}</p>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <div class="d-flex justify-content-around">
-
-                                                                <!-- Enlace para ver detalles del cliente -->
-                                                                <a href="{{ route('usuarios.cliente.show', $cliente->id) }}"
-                                                                    class="mb-0" title="Detalles" aria-label="Detalles">
-                                                                    <i class="fa-regular fa-address-card"></i>
-                                                                </a>
-                                                                <!-- Enlace para editar -->
-                                                                <a href="{{ route('usuarios.cliente.edit', $cliente->id) }}"
-                                                                    class="mb-0" title="Editar" aria-label="Editar">
-                                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                                </a>
-
-
-                                                                <!-- Enlace para eliminar -->
-                                                                <a href="#" class="mb-0 delete-product"
-                                                                    data-toggle="modal" data-target="#confirmDeleteModal"
-                                                                    data-product-id="{{ $cliente->user->id }}"
-                                                                    title="Eliminar" aria-label="Eliminar">
-                                                                    <i class="fa-regular fa-trash-can"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
-                                        <div class="my-4">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-center">
-                                                    <!-- Enlace "Anterior" -->
-                                                    <li
-                                                        class="page-item me-1 {{ $clientes->onFirstPage() ? 'disabled' : '' }}">
-                                                        <a class="page-link" href="{{ $clientes->previousPageUrl() }}"
-                                                            aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                            <span class="sr-only">Previous</span>
-                                                        </a>
+                                                <!-- Enlaces de las páginas -->
+                                                @for ($i = 1; $i <= $clientes->lastPage(); $i++)
+                                                    <li class="{{ $clientes->currentPage() == $i ? 'active' : '' }}">
+                                                        <a class="page-link"
+                                                            href="{{ $clientes->url($i) }}">{{ $i }}</a>
                                                     </li>
+                                                @endfor
 
-                                                    <!-- Enlaces de las páginas -->
-                                                    @for ($i = 1; $i <= $clientes->lastPage(); $i++)
-                                                        <li class="{{ $clientes->currentPage() == $i ? 'active' : '' }}">
-                                                            <a class="page-link"
-                                                                href="{{ $clientes->url($i) }}">{{ $i }}</a>
-                                                        </li>
-                                                    @endfor
+                                                <!-- Enlace "Siguiente" -->
+                                                <li
+                                                    class="page-item ms-1 {{ $clientes->hasMorePages() ? 'disabled' : '' }}">
+                                                    <a class="page-link" href="{{ $clientes->nextPageUrl() }}"
+                                                        aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
 
-                                                    <!-- Enlace "Siguiente" -->
-                                                    <li
-                                                        class="page-item ms-1 {{ $clientes->hasMorePages() ? 'disabled' : '' }}">
-                                                        <a class="page-link" href="{{ $clientes->nextPageUrl() }}"
-                                                            aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                            <span class="sr-only">Next</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                 
                                 </div>
                             </div>
                         </div>
@@ -225,30 +232,5 @@
         </div>
     </section>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar este cliente?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($cliente))
-                        <form id="deleteForm" action="{{ route('usuarios.cliente.destroy', $cliente) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
+

@@ -153,12 +153,19 @@
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </a>
                                                         <!-- Enlace para eliminar -->
-                                                        <a href="#" class="mb-0 delete-admin" data-toggle="modal"
-                                                            data-target="#confirmDeleteModal"
-                                                            data-admin-id="{{ $administrador->id }}" title="Eliminar"
-                                                            aria-label="Eliminar">
-                                                            <i class="fa-regular fa-trash-can"></i>
-                                                        </a>
+                                                        <a href="{{ route('usuarios.administrador.destroy', $administrador->id) }}"
+                                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $administrador->id }}').submit();"
+                                                            title="Eliminar" aria-label="Eliminar">
+                                                             <i class="fa-regular fa-trash-can"></i>
+                                                         </a>
+                                                         
+                                                         <form id="delete-form-{{ $administrador->id }}"
+                                                               action="{{ route('usuarios.administrador.destroy', $administrador->id) }}"
+                                                               method="POST"
+                                                               style="display: none;">
+                                                             @csrf
+                                                             @method('DELETE')
+                                                         </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -176,32 +183,5 @@
             </div>
         </div>
     </section>
-
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar este administrador?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($administrador))
-                        <form id="deleteForm" action="{{ route('usuarios.administrador.destroy', $administrador) }}"
-                            method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
 
 @endsection

@@ -127,13 +127,24 @@
                                                             title="Editar" aria-label="Editar">
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </a>
-                                                        <!-- Enlace para eliminar -->
-                                                        <a href="#" class="mb-0 delete-product" data-toggle="modal"
-                                                            data-target="#confirmDeleteModal"
-                                                            data-product-id="{{ $producto->id }}" title="Eliminar"
-                                                            aria-label="Eliminar">
+                                                        
+
+                                                         <!-- Enlace para eliminar -->
+                                                         <a href="{{ route('productos.destroy', $producto->id) }}"
+                                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $producto->id }}').submit();"
+                                                            title="Eliminar" aria-label="Eliminar">
                                                             <i class="fa-regular fa-trash-can"></i>
                                                         </a>
+                                                        
+                                                        <form id="delete-form-{{ $producto->id }}"
+                                                            action="{{ route('productos.destroy', $producto->id) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                        
+                                                         
+
                                                     </div>
                                                 </td>
                                                 @endif
@@ -181,29 +192,4 @@
         </div>
     </section>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar este producto?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($producto))
-                        <form id="deleteForm" action="{{ route('productos.destroy', $producto) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

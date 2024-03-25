@@ -84,149 +84,153 @@
                 @else
                     <div class="row justify-content-center">
                         <div class="col-lg-10">
-                           
-                                <div class="card">
-                                    <div class="table-responsive">
-                                        <table class="table align-items-center mb-0">
-                                            <thead>
-                                                <tr class="bg-gray-200">
-                                                    <th colspan="6">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h4 class="mb-0">Lista de citas</h4>
-                                                            @auth
-                                                                @if (Auth::check() && Auth::user()->perfil)
-                                                                    @if (Auth::user()->perfil->tipo === 'administrador' || Auth::user()->perfil->tipo === 'empleado')
-                                                                        <a href="{{ route('citas.create') }}"><i
-                                                                                class="fa-solid fa-plus-circle fa-2xl"
-                                                                                title="Crear cita" aria-label="Crear cita"></i></a>
-                                                                    @endif
+
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                            <tr class="bg-gray-200">
+                                                <th colspan="6">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h4 class="mb-0">Lista de citas</h4>
+                                                        @auth
+                                                            @if (Auth::check() && Auth::user()->perfil)
+                                                                @if (Auth::user()->perfil->tipo === 'administrador' || Auth::user()->perfil->tipo === 'empleado')
+                                                                    <a href="{{ route('citas.create') }}"><i
+                                                                            class="fa-solid fa-plus-circle fa-2xl"
+                                                                            title="Crear cita" aria-label="Crear cita"></i></a>
                                                                 @endif
-                                                            @endauth
-                                                        </div>
-                                                    </th>
-                                                </tr>
+                                                            @endif
+                                                        @endauth
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Fecha</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Hora</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Cliente</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Empleado</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Tratamiento</th>
+                                                @auth
+                                                    @if (Auth::check() && Auth::user()->perfil)
+                                                        @if (Auth::user()->perfil->tipo === 'administrador' || Auth::user()->perfil->tipo === 'empleado')
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                                Acciones</th>
+                                                        @endif
+                                                    @endif
+                                                @endauth
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($citas as $cita)
                                                 <tr>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Fecha</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Hora</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Cliente</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Empleado</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Tratamiento</th>
+                                                    <td>
+                                                        <div class="d-flex px-2">
+                                                            <div>
+                                                                <p class="text-xs font-weight-bold mb-0">
+                                                                    {{ date('d/m/Y', strtotime($cita->fecha_hora)) }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ date('H:i', strtotime($cita->fecha_hora)) }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $cita->cliente->user->name }}
+                                                            {{ $cita->cliente->user->apellido_uno }}
+                                                            {{ $cita->cliente->user->apellido_dos }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $cita->empleado->user->name }}
+                                                            {{ $cita->empleado->user->apellido_uno }}
+                                                            {{ $cita->empleado->user->apellido_dos }} -
+                                                            {{ $cita->empleado->rol_empleado }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $cita->tratamiento->nombre }}
+                                                        </p>
+                                                    </td>
                                                     @auth
                                                         @if (Auth::check() && Auth::user()->perfil)
                                                             @if (Auth::user()->perfil->tipo === 'administrador' || Auth::user()->perfil->tipo === 'empleado')
-                                                                <th
-                                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                    Acciones</th>
+                                                                <td class="align-middle">
+                                                                    <div class="d-flex justify-content-around">
+
+
+                                                                        <!-- Enlace para editar -->
+                                                                        <a href="{{ route('citas.edit', $cita->id) }}"
+                                                                            class="mb-0" title="Editar" aria-label="Editar">
+                                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                                        </a>
+                                                                        <!-- Enlace para eliminar -->
+                                                                        <a href="{{ route('citas.destroy', $cita->id) }}"
+                                                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $cita->id }}').submit();"
+                                                                            title="Eliminar" aria-label="Eliminar">
+                                                                            <i class="fa-regular fa-trash-can"></i>
+                                                                        </a>
+
+                                                                        <form id="delete-form-{{ $cita->id }}"
+                                                                            action="{{ route('citas.destroy', $cita->id) }}"
+                                                                            method="POST" style="display: none;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                        </form>
+                                                                    </div>
+                                                                </td>
                                                             @endif
                                                         @endif
                                                     @endauth
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($citas as $cita)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex px-2">
-                                                                <div>
-                                                                    <p class="text-xs font-weight-bold mb-0">
-                                                                        {{ date('d/m/Y', strtotime($cita->fecha_hora)) }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ date('H:i', strtotime($cita->fecha_hora)) }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $cita->cliente->user->name }}
-                                                                {{ $cita->cliente->user->apellido_uno }}
-                                                                {{ $cita->cliente->user->apellido_dos }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $cita->empleado->user->name }}
-                                                                {{ $cita->empleado->user->apellido_uno }}
-                                                                {{ $cita->empleado->user->apellido_dos }} -
-                                                                {{ $cita->empleado->rol_empleado }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $cita->tratamiento->nombre }}
-                                                            </p>
-                                                        </td>
-                                                        @auth
-                                                            @if (Auth::check() && Auth::user()->perfil)
-                                                                @if (Auth::user()->perfil->tipo === 'administrador' || Auth::user()->perfil->tipo === 'empleado')
-                                                                    <td class="align-middle">
-                                                                        <div class="d-flex justify-content-around">
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <div class="my-4">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination justify-content-center">
+                                                <!-- Enlace "Anterior" -->
+                                                <li class="page-item me-1 {{ $citas->onFirstPage() ? 'disabled' : '' }}">
+                                                    <a class="page-link" href="{{ $citas->previousPageUrl() }}"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
 
-
-                                                                            <!-- Enlace para editar -->
-                                                                            <a href="{{ route('citas.edit', $cita->id) }}"
-                                                                                class="mb-0" title="Editar"
-                                                                                aria-label="Editar">
-                                                                                <i class="fa-regular fa-pen-to-square"></i>
-                                                                            </a>
-                                                                            <!-- Enlace para eliminar -->
-                                                                            <a href="#" class="mb-0 delete-product"
-                                                                                data-toggle="modal"
-                                                                                data-target="#confirmDeleteModal"
-                                                                                data-product-id="{{ $cita->id }}"
-                                                                                title="Eliminar" aria-label="Eliminar">
-                                                                                <i class="fa-regular fa-trash-can"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                @endif
-                                                            @endif
-                                                        @endauth
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <div class="my-4">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-center">
-                                                    <!-- Enlace "Anterior" -->
-                                                    <li class="page-item me-1 {{ $citas->onFirstPage() ? 'disabled' : '' }}">
-                                                        <a class="page-link" href="{{ $citas->previousPageUrl() }}"
-                                                            aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                            <span class="sr-only">Previous</span>
-                                                        </a>
+                                                <!-- Enlaces de las páginas -->
+                                                @for ($i = 1; $i <= $citas->lastPage(); $i++)
+                                                    <li class="{{ $citas->currentPage() == $i ? 'active' : '' }}">
+                                                        <a class="page-link"
+                                                            href="{{ $citas->url($i) }}">{{ $i }}</a>
                                                     </li>
+                                                @endfor
 
-                                                    <!-- Enlaces de las páginas -->
-                                                    @for ($i = 1; $i <= $citas->lastPage(); $i++)
-                                                        <li class="{{ $citas->currentPage() == $i ? 'active' : '' }}">
-                                                            <a class="page-link"
-                                                                href="{{ $citas->url($i) }}">{{ $i }}</a>
-                                                        </li>
-                                                    @endfor
+                                                <!-- Enlace "Siguiente" -->
+                                                <li class="page-item ms-1 {{ $citas->hasMorePages() ? 'disabled' : '' }}">
+                                                    <a class="page-link" href="{{ $citas->nextPageUrl() }}"
+                                                        aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
 
-                                                    <!-- Enlace "Siguiente" -->
-                                                    <li class="page-item ms-1 {{ $citas->hasMorePages() ? 'disabled' : '' }}">
-                                                        <a class="page-link" href="{{ $citas->nextPageUrl() }}"
-                                                            aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                            <span class="sr-only">Next</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                  
                                 </div>
                             </div>
                         </div>
@@ -235,31 +239,5 @@
             @endif
         </div>
     </section>
-
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar esta cita?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($cita))
-                        <form id="deleteForm" action="{{ route('citas.destroy', $cita) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
 
 @endsection

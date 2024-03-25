@@ -83,10 +83,19 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
+     
         try {
+            
             $producto = Producto::findOrFail($id);
-            $producto->delete();
-            return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
+
+            if ($producto) {
+                $producto->delete();
+
+                return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
+            } else {
+                return redirect()->route('productos.index')->with('error', 'No se pudo encontrar el producto');
+            }
+
         } catch (ModelNotFoundException $e) {
             return redirect()->route('productos.index')->with('error', 'No se pudo encontrar el producto');
         } catch (\Exception $e) {

@@ -137,12 +137,19 @@
 
 
                                                                     <!-- Enlace para eliminar -->
-                                                                    <a href="#" class="mb-0 delete-product"
-                                                                        data-toggle="modal" data-target="#confirmDeleteModal"
-                                                                        data-product-id="{{ $tratamiento->id }}" title="Eliminar"
-                                                                        aria-label="Eliminar">
+                                                                    <a href="{{ route('tratamientos.destroy', $tratamiento->id) }}"
+                                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $tratamiento->id }}').submit();"
+                                                                        title="Eliminar" aria-label="Eliminar">
                                                                         <i class="fa-regular fa-trash-can"></i>
                                                                     </a>
+
+                                                                    <form id="delete-form-{{ $tratamiento->id }}"
+                                                                        action="{{ route('tratamientos.destroy', $tratamiento->id) }}"
+                                                                        method="POST" style="display: none;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                    </form>
+
                                                                 </div>
                                                             </td>
                                                         @endif
@@ -155,7 +162,8 @@
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination justify-content-center">
                                                 <!-- Enlace "Anterior" -->
-                                                <li class="page-item me-1 {{ $tratamientos->onFirstPage() ? 'disabled' : '' }}">
+                                                <li
+                                                    class="page-item me-1 {{ $tratamientos->onFirstPage() ? 'disabled' : '' }}">
                                                     <a class="page-link" href="{{ $tratamientos->previousPageUrl() }}"
                                                         aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
@@ -191,29 +199,4 @@
             </div>
     </section>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar este tratamiento?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($tratamiento))
-                        <form id="deleteForm" action="{{ route('tratamientos.destroy', $tratamiento) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

@@ -47,8 +47,7 @@
                     <div class="col-lg-4 col-md-5 col-sm-6 col-8">
                         <form action="{{ route('facturas.buscar') }}" method="GET">
                             <div class="input-group input-group-dynamic ">
-                                <input class="form-control" name="search" placeholder="Introduzca el dni"
-                                    type="text">
+                                <input class="form-control" name="search" placeholder="Introduzca el dni" type="text">
                                 <button class="btn btn-primary" type="submit" style="margin-bottom: 0rem;">Buscar</button>
                             </div>
                         </form>
@@ -122,42 +121,52 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($facturas as $factura)
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex px-2">
-                                                            <div>
-                                                                <h6 class="mb-0 text-xs">{{ $factura->cliente->user->name }}
-                                                                    {{ $factura->cliente->user->apellido_uno }}
-                                                                    {{ $factura->cliente->user->apellido_dos }}</h6>
+                                                @if ($factura->cliente)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex px-2">
+                                                                <div>
+                                                                    <h6 class="mb-0 text-xs">
+                                                                        {{ $factura->cliente->user->name }}
+                                                                        {{ $factura->cliente->user->apellido_uno }}
+                                                                        {{ $factura->cliente->user->apellido_dos }}</h6>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-xs font-weight-bold mb-0">
-                                                            {{ $factura->cliente->user->DNI }}
-                                                        </p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-xs font-weight-bold mb-0">
-                                                            {{ date('d/m/Y', strtotime($factura->fecha_emision)) }}</p>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div class="d-flex justify-content-around">
-                                                            <a href="{{ route('facturas.show', $factura->id) }}"
-                                                                class="mb-0" title="Ver" aria-label="Ver factura">
-                                                                <i class="fa-solid fa-print"></i>
-                                                            </a>
-                                                            <!-- Enlace para eliminar -->
-                                                            <a href="#" class="mb-0 delete-product"
-                                                                data-toggle="modal" data-target="#confirmDeleteModal"
-                                                                data-product-id="{{ $factura->id }}" title="Eliminar"
-                                                                aria-label="Eliminar">
-                                                                <i class="fa-regular fa-trash-can"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-xs font-weight-bold mb-0">
+                                                                {{ $factura->cliente->user->DNI }}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-xs font-weight-bold mb-0">
+                                                                {{ date('d/m/Y', strtotime($factura->fecha_emision)) }}</p>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="d-flex justify-content-around">
+                                                                <a href="{{ route('facturas.show', $factura->id) }}"
+                                                                    class="mb-0" title="Ver" aria-label="Ver factura">
+                                                                    <i class="fa-solid fa-print"></i>
+                                                                </a>
+
+                                                                <!-- Enlace para eliminar -->
+                                                                <a href="{{ route('facturas.destroy', $factura->id) }}"
+                                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $factura->id }}').submit();"
+                                                                    title="Eliminar" aria-label="Eliminar">
+                                                                    <i class="fa-regular fa-trash-can"></i>
+                                                                </a>
+
+                                                                <form id="delete-form-{{ $factura->id }}"
+                                                                    action="{{ route('facturas.destroy', $factura->id) }}"
+                                                                    method="POST" style="display: none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -169,29 +178,4 @@
         </div>
     </section>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que quieres eliminar esta factura?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn bg-gradient-dark mb-0" data-dismiss="modal">Cancelar</button>
-                    @if (isset($factura))
-                        <form id="deleteForm" action="{{ route('facturas.destroy', $factura->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-gradient-primary mb-0">Eliminar</button>
-                        </form>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
